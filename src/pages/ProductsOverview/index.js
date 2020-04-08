@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Ionicons, Feather } from '@expo/vector-icons';
+import SearchBar from '~/components/SearchBar';
 import api from '~/serivces/api';
 import {
     Container,
@@ -40,7 +41,8 @@ export default function Products() {
     }, []);
     return (
         <Container>
-            <Text style={{ color: '#156', fontSize: 16 }}>
+            <SearchBar />
+            <Text style={{ color: '#156', fontSize: 12, marginLeft: 10 }}>
                 TOTAL DE PRODUTOS: {products.length}
             </Text>
             <List
@@ -91,3 +93,17 @@ export default function Products() {
         </Container>
     );
 }
+
+Products.navigationOptions = ({ navigation }) => {
+    return {
+        headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+                <Feather
+                    name="shopping-bag"
+                    size={30}
+                    style={{ color: '#89c085' }}
+                />
+            </TouchableOpacity>
+        ),
+    };
+};
