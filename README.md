@@ -4,29 +4,24 @@
 
 <h4 align="center">
   Consiste em uma aplicação ecommerce para listagem de produtos e do carrinho de compras.
-    - Navegar entre as páginas de produtos e carrinho
-    - Listar produtos
-    - Adicionar/Remover/Alterar quantidade produtos ao carrinho
-    - Toda vez que alguma dessas ações for tomada, deve ser enviada uma mensagem ao usuário informando do sucesso ou erro.
-    -Calcular o total do carrinho
-    - Ao final da implementação, a sua interface deve seguir a estrutura dos wireframes abaixo. Um dos pontos mais importantes que iremos
-    considerar, além do funcionamento, é o acabamento visual.
+
 
 </h4>
 <p align="center">
   <img alt="login" src=".github/ss1.jpeg" width="250px>
 
-  <img alt="profile" src=".github/ss2.jpeg" width="250px>
 
+
+<p align="center">
+  <img alt="cart" src=".github/ss2.jpeg" width="250px>
+
+</p>
 <p align="center">
   <img alt="gifs" src=".github/videogif.gif" width="250px">
 
 </p>
 <br>
 
-<p align="center">
-  <img alt="Frontend" src=".github/logo.png" width="95px">
-</p>
 
 
 ##  MOBILE
@@ -49,8 +44,8 @@
 - [X] TELA/LAYOUT DE CARRINHO COM MOCK
 - [X] LISTAR PRODUTOS DO CARRINHO DA API
 - [X] TRANSFERIR REGRA DE NEGOCIO PARA REDUX/SAGA
-- [] FINALIZAR AJUSTES EM REGRA DE NEGÓCIO.
-- [] Finalizar SearchBar.
+- [ ] FINALIZAR AJUSTES EM REGRA DE NEGÓCIO.
+- [ ] Finalizar SearchBar.
 
 
 
