@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch, connect } from 'react-redux';
+import { Text, TouchableOpacity } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import SearchBar from '~/components/SearchBar';
+import { formatPrice } from '~/utils/format';
 import api from '~/serivces/api';
+
+import * as CartActions from '~/store/modules/cart/actions';
+
 import {
+    Alert,
     Container,
     List,
     ProductDetail,
@@ -21,24 +27,37 @@ import {
     SubButton,
     Quant,
 } from './styles';
+// import * as CartActions from '~/store/modules/cart/actions';
 
-export default function Products() {
+function Products() {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    async function loadProducts() {
-        // if (loading) {
-        //     return;
-        // }
+    const amount = useSelector(state =>
+        state.cart.reduce((sumAmount, product) => {
+            sumAmount[product.id] = product.amount;
+            return sumAmount;
+        }, {})
+    );
 
-        // setLoading(true);
-        const response = await api.get('/product');
-
-        setProducts(response.data);
-    }
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch({ type: '@cart/FETCH_CART' });
+        async function loadProducts() {
+            const response = await api.get('product');
+
+            const data = response.data.map(product => ({
+                ...product,
+                priceFormatted: formatPrice(product.price),
+            }));
+
+            setProducts(data);
+        }
         loadProducts();
     }, []);
+
+    function handleAddProduct(sku) {
+        dispatch(CartActions.addToCartRequest(sku));
+    }
     return (
         <Container>
             <SearchBar />
@@ -51,9 +70,28 @@ export default function Products() {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: product }) => (
                     <ProductDetail>
+                        <Alert>
+                            <Feather
+                                name="alert-triangle"
+                                size={16}
+                                color="red"
+                            />
+                            <Text
+                                style={{
+                                    color: 'red',
+                                    marginLeft: 5,
+                                    fontSize: 12,
+                                }}
+                            >
+                                Últimas unidades
+                            </Text>
+                        </Alert>
                         <ProductImage source={{ uri: product.imageURL }} />
                         <ProductInfo>
                             <ProductCod>Cod. {product.sku}</ProductCod>
+                            <ProductCategory>
+                                {product.category}
+                            </ProductCategory>
                             <ProductTitle numberOfLines={2}>
                                 {product.name}
                             </ProductTitle>
@@ -61,26 +99,29 @@ export default function Products() {
                                 <ProductMaker>
                                     {product.maker.toUpperCase()}
                                 </ProductMaker>
-                                <ProductCategory>
-                                    {product.category}
-                                </ProductCategory>
                             </ContainerCod>
 
                             <ContainerFooter>
-                                <ProductPrice>R${product.price}</ProductPrice>
                                 <ContainerButton>
-                                    <AddButton>
+                                    <ProductPrice>
+                                        {product.priceFormatted}
+                                    </ProductPrice>
+                                    <AddButton
+                                        onClick={() =>
+                                            handleAddProduct(product.sku)
+                                        }
+                                    >
                                         <Ionicons
                                             name="ios-add-circle-outline"
-                                            size={30}
+                                            size={28}
                                             color="#89c085"
                                         />
                                     </AddButton>
-                                    <Quant>5</Quant>
+                                    <Quant>{amount[product.sku] || 0}</Quant>
                                     <SubButton>
                                         <Ionicons
                                             name="ios-remove-circle-outline"
-                                            size={30}
+                                            size={28}
                                             color="#89c085"
                                         />
                                     </SubButton>
@@ -96,6 +137,7 @@ export default function Products() {
 
 Products.navigationOptions = ({ navigation }) => {
     return {
+        headerTitle: 'Produtos',
         headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
                 <Feather
@@ -107,3 +149,5 @@ Products.navigationOptions = ({ navigation }) => {
         ),
     };
 };
+
+export default connect()(Products);

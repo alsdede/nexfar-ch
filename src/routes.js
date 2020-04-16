@@ -6,9 +6,9 @@ import ProductsOverview from '~/pages/ProductsOverview';
 import Cart from '~/pages/Cart';
 
 const defaultStackNavOptions = {
-    headerTintColor: '#fff',
+    headerTintColor: '#89c085',
     headerBackTitleVisible: false,
-    headerShow: false,
+
     headerStyle: {
         backgroundColor: '#FFF',
     },
@@ -18,15 +18,11 @@ const Routes = createStackNavigator(
         Products: {
             screen: ProductsOverview,
 
-            navigationOptions: {
-                title: 'Movies',
-            },
+            navigationOptions: {},
         },
         Cart: {
             screen: Cart,
-            navigationOptions: {
-                title: 'Movie Details',
-            },
+            navigationOptions: {},
         },
     },
     {

@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import api from '~/serivces/api';
+import { formatPrice } from '~/utils/format';
+
 import {
     Container,
     List,
@@ -29,52 +32,61 @@ import {
     CheckoutTotalRow,
     CheckoutTotal,
 } from './styles';
+// import * as CartActions from '~/store/modules/cart/actions';
 
 export default function Cart() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    async function loadProducts() {
-        // if (loading) {
-        //     return;
-        // }
+    const cart = useSelector(state =>
+        state.cart.map(product => ({
+            ...product,
+            subtotal: formatPrice(product.price * product.amount),
+        }))
+    );
 
-        // setLoading(true);
-        const response = await api.get('/product');
+    const dispatch = useDispatch();
+    // const [cart, setCart] = useState([]);
+    // useEffect(() => {
+    //     async function loadProducts() {
+    //         const response = await api.get('cart');
 
-        setProducts(response.data);
-    }
+    //         const data = response.data.items.map(product => ({
+    //             ...product,
+    //             priceFormatted: formatPrice(product.price),
+    //         }));
 
-    useEffect(() => {
-        loadProducts();
-    }, []);
+    //         setCart(data);
+    //     }
+    //     loadProducts();
+    // }, []);
     return (
         <Container>
-            {/* <Text style={{ color: '#156', fontSize: 16 }}>
+            {/* {/* <Text style={{ color: '#156', fontSize: 16 }}>
                 TOTAL DE PRODUTOS: {products.length}
             </Text> */}
             <List
-                data={products}
-                keyExtractor={product => String(product.sku)}
+                data={cart}
+                keyExtractor={item => String(item.product.sku)}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item: product }) => (
+                renderItem={({ item }) => (
                     <ProductDetail>
-                        <ProductImage source={{ uri: product.imageURL }} />
+                        <ProductImage source={{ uri: item.product.imageURL }} />
                         <ProductInfo>
-                            <ProductCod>Cod. {product.sku}</ProductCod>
+                            <ProductCod>Cod. {item.product.sku}</ProductCod>
                             <ProductTitle numberOfLines={2}>
-                                {product.name}
+                                {item.product.name}
                             </ProductTitle>
                             <ContainerCod>
                                 <ProductMaker>
-                                    {product.maker.toUpperCase()}
+                                    {item.product.maker}
                                 </ProductMaker>
                                 <ProductCategory>
-                                    {product.category}
+                                    {item.product.category}
                                 </ProductCategory>
                             </ContainerCod>
 
                             <ContainerFooter>
-                                <ProductPrice>R${product.price}</ProductPrice>
+                                <ProductPrice>
+                                    R${item.product.price}
+                                </ProductPrice>
                                 <ContainerButton>
                                     <AddButton>
                                         <Ionicons
@@ -83,7 +95,7 @@ export default function Cart() {
                                             color="#89c085"
                                         />
                                     </AddButton>
-                                    <Quant>5</Quant>
+                                    <Quant>{item.quantity}</Quant>
                                     <SubButton>
                                         <Ionicons
                                             name="ios-remove-circle-outline"
@@ -127,3 +139,18 @@ export default function Cart() {
         </Container>
     );
 }
+
+Cart.navigationOptions = ({ navigation }) => {
+    return {
+        headerTitle: 'Carrinho',
+        headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Products')}>
+                <Feather
+                    name="arrow-left"
+                    size={30}
+                    style={{ color: '#89c085' }}
+                />
+            </TouchableOpacity>
+        ),
+    };
+};

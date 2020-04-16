@@ -4,8 +4,12 @@ export const Container = styled.SafeAreaView`
     flex: 1;
 `;
 
-export const List = styled.FlatList`
-    padding: 5px;
+export const List = styled.FlatList.attrs({
+    showsVerticalScrollIndicator: false,
+    numColumns: 2,
+})`
+    margin-top: 10px;
+    padding: 0 6px;
 `;
 
 export const ProductDetail = styled.View.attrs({
@@ -19,28 +23,24 @@ export const ProductDetail = styled.View.attrs({
 
     elevation: 1,
 })`
-    flex: 1;
-    height: 150px;
-    padding: 10px;
-    flex-direction: row;
-
-    margin-top: 5px;
     background: #fff;
+    padding: 5px;
+    flex: 1;
+
+    margin: 0 2px 10px;
 `;
 
 export const ProductImage = styled.Image`
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 150px;
 `;
 export const ProductInfo = styled.View`
     flex: 1;
-
-    margin-left: 10px;
 `;
 export const ProductTitle = styled.Text`
     font-family: open-sans-bold;
-    font-size: 18px;
-    margin-bottom: 3px;
+    font-size: 20px;
+
     color: #89c085;
 `;
 
@@ -49,8 +49,9 @@ export const ContainerCod = styled.View.attrs({
     borderLeftWidth: 2,
     borderRadius: 2,
 })`
-    flex-direction: row;
     justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: auto;
 `;
 export const ProductCod = styled.Text`
     font-size: 9px;
@@ -58,28 +59,24 @@ export const ProductCod = styled.Text`
 `;
 
 export const ProductCategory = styled.Text`
+    color: #333d88;
     font-size: 12px;
-    margin-bottom: 3px;
-    color: #1576b6;
-    font-family: open-sans-bold;
+    font-weight: bold;
 `;
 
 export const ProductPrice = styled.Text`
-    margin-top: auto;
-    font-family: open-sans-bold;
-    font-size: 25px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 5px;
     color: #333;
 `;
 
 export const ProductMaker = styled.Text`
-    font-size: 14px;
-    margin-bottom: 2px;
-    color: #333;
-    font-weight: bold;
+    font-size: 12px;
+    color: #444;
 `;
-export const ContainerFooter = styled.View`
-    margin-top: auto;
-    flex-direction: row;
+export const ContainerFooter = styled.View.attrs({})`
+    margin-top: 15px;
     justify-content: space-between;
 `;
 export const ContainerButton = styled.View`
@@ -89,10 +86,15 @@ export const ContainerButton = styled.View`
 export const AddButton = styled.TouchableOpacity``;
 export const SubButton = styled.TouchableOpacity``;
 export const Quant = styled.Text`
-    font-size: 25px;
-    color: #a0a0a0;
-    line-height: 25px;
+    font-size: 18px;
 
-    padding-left: 5px;
-    padding-right: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+`;
+
+export const Alert = styled.View`
+    flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+    margin-left: 5px;
 `;

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import './src/config/ReactotronConfig';
+import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import Routes from '~/routes';
+import store from '~/store';
 
 const fetchFonts = () => {
     return Font.loadAsync({
@@ -15,7 +18,7 @@ const fetchFonts = () => {
     });
 };
 
-export default function App() {
+function App() {
     const [fontLoaded, setFontLoaded] = useState(false);
 
     if (!fontLoaded) {
@@ -28,5 +31,11 @@ export default function App() {
             />
         );
     }
-    return <Routes />;
+    return (
+        <Provider store={store}>
+            <Routes />
+        </Provider>
+    );
 }
+
+export default App;

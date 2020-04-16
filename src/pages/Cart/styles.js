@@ -108,7 +108,7 @@ export const ContainerCheckout = styled.View.attrs({
 
     elevation: 2,
 })`
-    height: 200px;
+    height: 180px;
     background: #fff;
     opacity: 0.8;
     padding: 10px;
